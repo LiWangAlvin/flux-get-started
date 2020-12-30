@@ -1,0 +1,27 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: poc-flux
+  namespace: poc-flux
+spec:
+  interval: 1m0s
+  ref:
+    branch: master
+  secretRef:
+    name: poc-flux
+  url: ssh://git@github.com/LiWangAlvin/flux-get-started
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: poc-flux
+  namespace: poc-flux
+spec:
+  interval: 10m0s
+  path: ./releases
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: poc-flux
+  validation: client
